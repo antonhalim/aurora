@@ -77,7 +77,6 @@ class UsersController extends \BaseController {
     }
 
     $waka = $this->mobileCommons->userProfile($user['mobile']);
-    dd($waka);
     return View::make('users.show')->with(compact('user', 'aurora_user', 'campaigns', 'reportbacks'));
   }
 
