@@ -74,3 +74,39 @@
 .profile-settings dd{
   float: left;
 }
+
+.message-sent {
+  color: white;
+  background: #2095FE;
+  border-color: #2095FE;
+  border-radius: 5px;
+  float: right;
+  width: 100%;
+  position: relative;
+  margin: 10px 0;
+  padding-bottom: 1.5em;
+}
+
+.message-received {
+  color: #999;
+  background: #c7fcc7;
+  border-color: #c7fcc7;
+  border-radius: 5px;
+  float: right;
+  width: 100%;
+  position: relative;
+  margin: 10px 0;
+  padding-bottom: 1.5em;
+}
+
+.message-failed {
+  color: black;
+  background: #ea5656;
+  border-color: #ea5656;
+  border-radius: 5px;
+  float: right;
+  width: 100%;
+  position: relative;
+  margin: 10px 0;
+  padding-bottom: 1.5em;
+}
