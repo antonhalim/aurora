@@ -46,7 +46,7 @@ class MobileCommonsAPI {
 
     $array = json_decode($json, TRUE);
 
-    return $array['profile']['messages'];
+    return $array['profile']['messages']['message'];
   }
 
 }
