@@ -1,6 +1,7 @@
 <?php namespace Aurora\Services\MobileCommons;
 
 use GuzzleHttp\Client;
+use Response;
 
 class MobileCommonsAPI {
 
@@ -10,11 +11,12 @@ class MobileCommonsAPI {
   {
     $base_url = "https://secure.mcommons.com/api/profile";
 
-    $client = new Client(['base_url' => $base_url]);
-
-    $response = $this->client->post('/login');
-
-    dd($response);
+   $client = new \GuzzleHttp\Client([
+      'base_url' => $base_url,
+      'defaults' => array(
+        'auth' => ['developerasst3@dosomething.org', 'zanzibar', 'Basic']
+        ),
+    ]);
 
     $this->client = $client;
   }
@@ -24,7 +26,9 @@ class MobileCommonsAPI {
 
     $response = $this->client->get('?phone_number=' . $mobile);
 
-    return $response;
+    $xml = $response->xml();
+
+    return $xml.profile;
   }
 
 }
