@@ -9,11 +9,11 @@
 	  <div class="container__block">
 	  	@forelse($mc_messages as $message)
 	  		@if ($message['@attributes']['status'] == "sent")
-					<div class="message-sent">
+					<div class="message sent">
 	  		@elseif ($message['@attributes']['status'] == "failed_permanently")
-  				<div class="message-failed">
+  				<div class="message failed">
 	  		@else
-  				<div class="message-received">
+  				<div class="message received">
 	  		@endif
 						<div class="container__block">
 							<dl class="profile-settings">
