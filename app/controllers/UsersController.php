@@ -76,8 +76,11 @@ class UsersController extends \BaseController {
       }
     }
 
-    $waka = $this->mobileCommons->userProfile($user['mobile']);
-    return View::make('users.show')->with(compact('user', 'aurora_user', 'campaigns', 'reportbacks'));
+    $mc_profile = $this->mobileCommons->userProfile($user['mobile']);
+
+    $mc_messages = $this->mobileCommons->userMessages($user['mobile']);
+    
+    return View::make('users.show')->with(compact('user', 'aurora_user', 'campaigns', 'reportbacks', 'mc_messages', 'mc_profile'));
   }
 
 
@@ -139,6 +142,13 @@ class UsersController extends \BaseController {
     // Create a new user in database with admin role
     User::create(['_id' => $user_id])->assignRole(1);
     return Redirect::back()->with('flash_message', ['class' => 'alert alert-success', 'text' => 'The more admins the merrier.']);
+  }
+
+  public function mobileCommonsMessages($id)
+  {
+    $user = $this->northstar->getUser('_id', $id);
+
+    return View::make('users.mobile-commons-messages')->with(compact('user'));
   }
 
 
