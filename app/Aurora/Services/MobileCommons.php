@@ -24,11 +24,29 @@ class MobileCommonsAPI {
   public function userProfile($mobile)
   {
 
-    $response = $this->client->get('?phone_number=' . $mobile);
+    $response = $this->client->get('?phone_number=' . $mobile . '&include_messages=true');
 
     $xml = $response->xml();
 
-    return $xml.profile;
+    $json = json_encode($xml);
+
+    $array = json_decode($json, TRUE);
+
+    return $array['profile'];
+  }
+
+  public function userMessages($mobile)
+  {
+
+    $response = $this->client->get('?phone_number=' . $mobile . '&include_messages=true');
+
+    $xml = $response->xml();
+
+    $json = json_encode($xml);
+
+    $array = json_decode($json, TRUE);
+
+    return $array['profile']['messages'];
   }
 
 }
