@@ -148,7 +148,9 @@ class UsersController extends \BaseController {
   {
     $user = $this->northstar->getUser('_id', $id);
 
-    return View::make('users.mobile-commons-messages')->with(compact('user'));
+    $mc_messages = $this->mobileCommons->userMessages($user['mobile']);
+
+    return View::make('users.mobile-commons-messages')->with(compact('user', 'mc_messages'));
   }
 
 
