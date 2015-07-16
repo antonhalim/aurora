@@ -11,10 +11,10 @@ class MobileCommonsAPI {
   {
     $base_url = "https://secure.mcommons.com/api/profile";
 
-   $client = new \GuzzleHttp\Client([
+    $client = new \GuzzleHttp\Client([
       'base_url' => $base_url,
       'defaults' => array(
-        'auth' => ['developerasst3@dosomething.org', 'zanzibar', 'Basic']
+      'auth' => ['developerasst3@dosomething.org', 'zanzibar', 'Basic']
         ),
     ]);
 
