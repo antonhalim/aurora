@@ -20,3 +20,11 @@ function sanitizePhoneNumber($number, $countryName = 'US'){
 		return $number;
 	}
 }
+
+function formatDate($date)
+{
+	$date = date_create($date);
+	$date->setTimeZone(new DateTimeZone('America/New_York'));
+
+	return date_format($date, 'Y-m-d H:i');
+}

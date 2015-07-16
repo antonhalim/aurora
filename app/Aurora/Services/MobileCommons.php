@@ -4,33 +4,51 @@ use GuzzleHttp\Client;
 
 class MobileCommonsAPI {
 
- protected $client;
+  protected $client;
 
- public function __construct()
- {
-  $base_url = "https://secure.mcommons.com/api/";
+  public function __construct()
+  {
+    $base_url = "https://secure.mcommons.com/api/profile";
+    $client = new \GuzzleHttp\Client([
+      'base_url' => $base_url,
+      'defaults' => array(
+      'auth' => [
+        \Config::get('services.mobile_commons.username'),
+        \Config::get('services.mobile_commons.password'),
+          'Basic'
+        ]
+      ),
+    ]);
 
-  $client = new \GuzzleHttp\Client([
-	 'base_url' => $base_url,
-	 'defaults' => array(
-	 	'headers' => [
-	 		'Content-Type' => 'application/json',
-	 		'Accept'	=> 'application/json'
-		 ],
-		 'auth'		=> ['developerasst2@dosomething.org', 'summerintern!']
-	 ),
-	]);
-  $this->client = $client;
- }
+    $this->client = $client;
+  }
 
- public function userProfile($mobile)
- {
-  $response = $this->client->get('profile?phone_number=' . $mobile . '&include_messages=true');
+  public function userProfile($mobile)
+  {
 
-	$xml = $response->xml();
-	$json = json_encode($xml);
-	$array = json_decode($json, TRUE);
-	return $array;
- }
+    $response = $this->client->get('?phone_number=' . $mobile . '&include_messages=true');
+
+    $xml = $response->xml();
+
+    $json = json_encode($xml);
+
+    $array = json_decode($json, TRUE);
+
+    return $array['profile'];
+  }
+
+  public function userMessages($mobile)
+  {
+
+    $response = $this->client->get('?phone_number=' . $mobile . '&include_messages=true');
+
+    $xml = $response->xml();
+
+    $json = json_encode($xml);
+
+    $array = json_decode($json, TRUE);
+
+    return $array['profile']['messages']['message'];
+  }
 
 }
