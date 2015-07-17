@@ -24,7 +24,7 @@
       'url' => "http://staging.beta.dosomething.org/api/v1/"
     ),
     'mobile_commons' => array(
-      'username' => getenv('USERNAME'),
-      'password' => getenv("PASSWORD")
-    )
+      'username' => getenv('MOBILE_COMMONS_USERNAME'),
+      'password' => getenv('MOBILE_COMMONS_PASSWORD')
+    ),
   );
