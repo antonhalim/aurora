@@ -24,6 +24,7 @@ class UsersController extends \BaseController {
       $input = Input::all();
       $data = $this->northstar->getAllUsers($input);
       $users = $data['data'];
+      // dd(array_merge_recursive($users[1], $users[0]));
       return View::make('users.index')->with(compact('users', 'data'));
     } catch (Exception $e) {
       return View::make('users.index')->with('flash_message', ['class' => 'messages -error', 'text' => 'Looks like there is something wrong with the connection!']);
@@ -117,29 +118,27 @@ class UsersController extends \BaseController {
    */
   public function destroy($id)
   {
-    User::where(['_id' => $id])->firstOrFail()->removeRole(1);
-    return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => "The less admins the warier"]);
+    //
   }
 
-public function search()
- {
-   $search = filter_var(Input::get('search_by'), FILTER_SANITIZE_STRING);
-   $type = strtolower(str_replace(' ', '_', Input::get('type')));
-   try {
-     // Attempt to find the user.
-     $northstar_users = $this->northstar->getUsers($type, $search);
-
-     if (count($northstar_users) > 1){
-       //returning multiple user found in search
-       return View::make('search.results')->with(compact('northstar_users'));
-     }else{
-       //returning user show if only 1 user found
-       return Redirect::route('users.show', $northstar_users[0]['_id']);
-     }
-   } catch (Exception $e) {
-     return Redirect::back()->withInput()->with('flash_message', ['class' => 'messages -error', 'text' => 'Hmm, couldn\'t find anyone, are you sure thats right?']);
-   }
- }
+  public function search()
+  {
+    $search = filter_var(Input::get('search_by'), FILTER_SANITIZE_STRING);
+    $type = strtolower(str_replace(' ', '_', Input::get('type')));
+    try {
+      // Attempt to find the user.
+      $northstar_users = $this->northstar->getUsers($type, $search);
+      if (count($northstar_users) > 1){
+        //returning multiple user found in search
+        return View::make('search.results')->with(compact('northstar_users'));
+      }else{
+        //returning user show if only 1 user found
+        return Redirect::route('users.show', $users[0]['_id']);
+      }
+    } catch (Exception $e) {
+      return Redirect::back()->withInput()->with('flash_message', ['class' => 'messages -error', 'text' => 'Hmm, couldn\'t find anyone, are you sure thats right?']);
+    }
+  }
 
   public function adminCreate($user_id)
   {
@@ -147,6 +146,13 @@ public function search()
     User::firstOrCreate(['_id' => $user_id])->assignRole(1);
     return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => 'The more admins the merrier.']);
   }
+
+  public function adminRemove($user_id)
+  {
+    User::where(['_id' => $user_id])->firstOrFail()->removeRole(1);
+    return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => "The less admins the warier"]);
+  }
+
 
   public function adminIndex()
   {
@@ -159,13 +165,17 @@ public function search()
 
   public function deleteNorthstarUser($id)
   {
-    try{
-      $northstaruser = $this->northstar->deleteUser($id);
-      return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => 'User has been deleted!']);
+    try {
+      $response = $this->northstar->deleteUser($id);
+      return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => "The user is successfully deleted"]);
     } catch (Exception $e) {
-      return Redirect::back()->with('flash_message', ['class' => 'messages -error', 'text' => 'Hmm... looks like something went wrong']);
+      return Redirect::back()->with('flash_message', ['class' => 'messages -error', 'text' => "Delete Failed!"]);
     }
   }
 
-
+  public function merge()
+  {
+    $checked = Input::all();
+    dd($checked);
+  }
 }

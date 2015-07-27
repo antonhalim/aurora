@@ -8,6 +8,7 @@
 	<div class="wrapper">
 		<div class="container__block">
 			<ul class="gallery -duo">
+      {{ Form::open(['route' => ['users.merge']]) }}
 				@forelse($northstar_users as $northstar_profile)
 					<li>
 						<div class="container__block -padded results">
@@ -29,14 +30,16 @@
 								{{ isset($northstar_profile['campaigns']) ? ('<dt>No. of Campaigns:</dt><dd>' . count($northstar_profile['campaigns']) . '</dd>') : "<dt>This user has no campaigns</dt>" }}
 							</dl>
 						</article>
-								@include('users.partials.delete')
-								  <div class="form-item">
-								    <label class="option -checkbox">
-											{{ Form::checkbox('name') }}
-											<span class="option__indicator"></span>
-											<span>Merge User</span>
-										</label>
-									</div>
+						{{ Form::open(['method' => 'DELETE', 'route' => ['users.delete', $northstar_profile['_id']]]) }}
+						{{ Form::submit('Delete user', ['class' => 'button -secondary delete-warning']) }}
+						{{ Form::close() }}
+								<div class="form-item">
+						      <label class="option -checkbox">
+			                    {{ Form::checkbox($northstar_profile['_id'],"1") }}
+			                    <span class="option__indicator"></span>
+			                    <span>Merge User</span>
+			                </label>
+			            </div>
 						</div>
 					</li>
 				@empty
@@ -44,12 +47,11 @@
 				@endforelse
 			</ul>
 		</div>
+			                    {{ Form::submit('Send', ['class' => 'button -secondary']) }}
+			                    {{ Form::close() }}
 	</div>
 </div>
 {{ addClassToFirstResult() }}
 {{ userDeleteConfirmation() }}
 
 @stop
-
-
-
