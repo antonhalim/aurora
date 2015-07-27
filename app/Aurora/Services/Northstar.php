@@ -82,4 +82,23 @@ class NorthstarAPI {
       ]);
     return $response->json();
   }
+  // used in the search action of the users controller for the sake of duplicate users
+  public function getUsers($type, $id)
+  {
+    $response = $this->client->get('users' . '/' .  $type  . '/' . $id);
+    $northstar_users = $response->json()['data'];
+    uasort($northstar_users, function ($a, $b) {
+      if ($a['updated_at'] == $b['updated_at']) {
+          return 0;
+      }
+      return ($a['updated_at'] > $b['updated_at']) ? -1 : 1;
+    });
+    return $northstar_users;
+  }
+
+  // use with caution!
+  public function deleteUser($id)
+  {
+    $response = $this->client->delete('users/' . $id);
+  }
 }
