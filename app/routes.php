@@ -23,7 +23,7 @@ Route::resource('sessions', 'SessionsController', ['only' => ['create', 'store',
 
 # Users
 Route::resource('users', 'UsersController');
-Route::delete('northstar-user-delete/{user}', ['as' => 'users.delete', 'uses' => 'UsersController@deleteNorthstarUser', 'before' => 'auth']);
+Route::delete('northstar-user-delete/{user}', ['as' => 'users.deleteNorthstarUser', 'uses' => 'UsersController@deleteNorthstarUser', 'before' => 'auth']);
 Route::post('/user-merge', ['as' => 'users.merge', 'uses' => 'UsersController@merge']);
 # Search
 Route::post('search', ['as' => 'users.search', 'uses' => 'UsersController@search', 'before' =>'auth']);

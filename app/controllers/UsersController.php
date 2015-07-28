@@ -106,7 +106,8 @@ class UsersController extends \BaseController {
   {
     $input = Input::except('_token', '_id', 'drupal_uid');
     $user = $this->northstar->updateUser($id, $input);
-    return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => 'Sweet, look at you updating that user.']);
+    // return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => 'Sweet, look at you updating that user.']);
+    return Redirect::route('users.show', $id)->with('flash_message', ['class' => 'messages', 'text' => 'Sweet, look at you updating that user.']);
   }
 
 
@@ -133,7 +134,7 @@ class UsersController extends \BaseController {
         return View::make('search.results')->with(compact('northstar_users'));
       }else{
         //returning user show if only 1 user found
-        return Redirect::route('users.show', $users[0]['_id']);
+        return Redirect::route('users.show', $northstar_users[0]['_id']);
       }
     } catch (Exception $e) {
       return Redirect::back()->withInput()->with('flash_message', ['class' => 'messages -error', 'text' => 'Hmm, couldn\'t find anyone, are you sure thats right?']);
@@ -167,6 +168,7 @@ class UsersController extends \BaseController {
   {
     try {
       $response = $this->northstar->deleteUser($id);
+      return View::make('users.admin-index')->with(compact('users'));
       return Redirect::back()->with('flash_message', ['class' => 'messages', 'text' => "The user is successfully deleted"]);
     } catch (Exception $e) {
       return Redirect::back()->with('flash_message', ['class' => 'messages -error', 'text' => "Delete Failed!"]);
@@ -175,7 +177,21 @@ class UsersController extends \BaseController {
 
   public function merge()
   {
-    $checked = Input::all();
-    dd($checked);
+    $keepThis = "";
+    $inputs = Input::except('_token');
+    $merge = [];
+    while ($input = current($inputs)){
+      if($input == "delete"){
+        $merge = array_merge($merge, $this->northstar->getUser('_id', key($inputs)));
+        // $this->northstar->deleteUser(key($inputs));
+      // }elseif($input == "keep") {
+      //   $keepThis = $this->northstar->getUser('_id', key($inputs));
+      //   $users = array_merge_recursive($users, $keepThis);
+      }
+      next($inputs);
+    }
+    // $users = array_merge_recursive($users,$this->northstar->getUser('_id', array_search("keep", $inputs)));
+    $user = $this->northstar->getUser('_id',array_search("keep", $inputs));
+    return View::make('users.partials.update-merge-users')->with(compact('user', 'merge'));
   }
 }

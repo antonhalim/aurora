@@ -7,11 +7,10 @@
 <div class="container -padded">
 	<div class="wrapper">
 		<div class="container__block">
-			<ul class="gallery -duo">
-      {{ Form::open(['route' => ['users.merge']]) }}
+			{{ Form::open(['route' => 'users.merge', "method" => "post"]) }}
+				<ul class="gallery -duo">
 				@forelse($northstar_users as $northstar_profile)
 					<li>
-						<div class="container__block -padded results">
 						<article class="figure -left">
 							<dl class="profile-settings">
 							  <dt><a href="{{ url('users/' . $northstar_profile['_id'] . '/edit') }}">Edit User</a></dt>
@@ -28,30 +27,21 @@
 								@endif
 								{{ isset($northstar_profile['country']) ? ('<dt>Country:</dt><dd>' . e($northstar_profile['country']) . '</dd>') : "" }}
 								{{ isset($northstar_profile['campaigns']) ? ('<dt>No. of Campaigns:</dt><dd>' . count($northstar_profile['campaigns']) . '</dd>') : "<dt>This user has no campaigns</dt>" }}
+								<dt>{{ Form::hidden($northstar_profile['_id'], 'delete') }}</dt>
+								<dt>{{ Form::radio($northstar_profile['_id'], 'keep') }}</dt><dd>{{ Form::label('Keep this user')}}</dd>
 							</dl>
 						</article>
-						{{ Form::open(['method' => 'DELETE', 'route' => ['users.delete', $northstar_profile['_id']]]) }}
-						{{ Form::submit('Delete user', ['class' => 'button -secondary delete-warning']) }}
-						{{ Form::close() }}
-								<div class="form-item">
-						      <label class="option -checkbox">
-			                    {{ Form::checkbox($northstar_profile['_id'],"1") }}
-			                    <span class="option__indicator"></span>
-			                    <span>Merge User</span>
-			                </label>
-			            </div>
-						</div>
 					</li>
 				@empty
 					No User Found
 				@endforelse
 			</ul>
+			{{ Form::submit('Merge Users', ['class' => 'button -secondary']) }}
+      {{ Form::close() }}
 		</div>
-			                    {{ Form::submit('Send', ['class' => 'button -secondary']) }}
-			                    {{ Form::close() }}
 	</div>
 </div>
 {{ addClassToFirstResult() }}
-{{ userDeleteConfirmation() }}
+{{ userDeleteConfirmation() }
 
 @stop
