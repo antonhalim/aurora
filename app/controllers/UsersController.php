@@ -191,7 +191,8 @@ class UsersController extends \BaseController {
       next($inputs);
     }
     // $users = array_merge_recursive($users,$this->northstar->getUser('_id', array_search("keep", $inputs)));
-    $user = $this->northstar->getUser('_id',array_search("keep", $inputs));
-    return View::make('users.partials.update-merge-users')->with(compact('user', 'merge'));
+    $northstar_user = $this->northstar->getUser('_id', array_search("keep", $inputs));
+    $user = merge_user_data($northstar_user, $merge);
+    return View::make('users.partials.update-merge-users')->with(compact('user'));
   }
 }
