@@ -179,20 +179,14 @@ class UsersController extends \BaseController {
   {
     $keepThis = "";
     $inputs = Input::except('_token');
-    $merge = [];
-    while ($input = current($inputs)){
-      if($input == "delete"){
-        $merge = array_merge($merge, $this->northstar->getUser('_id', key($inputs)));
-        // $this->northstar->deleteUser(key($inputs));
-      // }elseif($input == "keep") {
-      //   $keepThis = $this->northstar->getUser('_id', key($inputs));
-      //   $users = array_merge_recursive($users, $keepThis);
+    $merge = $this->northstar->getUser('_id', array_search("keep", $inputs));
+    foreach($inputs as $id => $input){
+      if($input === "delete"){
+        $will_be_deleted_user = $this->northstar->getUser('_id', $id);
+        $merge = merge_user_data($merge, $will_be_deleted_user);
       }
-      next($inputs);
     }
-    // $users = array_merge_recursive($users,$this->northstar->getUser('_id', array_search("keep", $inputs)));
-    $northstar_user = $this->northstar->getUser('_id', array_search("keep", $inputs));
-    $user = merge_user_data($northstar_user, $merge);
+    $user = $merge;
     return View::make('users.partials.update-merge-users')->with(compact('user'));
   }
 }
