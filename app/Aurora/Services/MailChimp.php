@@ -1,4 +1,5 @@
 <?php namespace Aurora\Services\MailChimp;
+use \Drewm\MailChimp;
 
 class MailChimpAPI {
 
@@ -15,7 +16,7 @@ class MailChimpAPI {
     $this->domesticID = \Config::get('services.mailchimp.domestic_id');
     // 26+ club members
     $this->dinosaurID = \Config::get('services.mailchimp.dinosaur_id');
-    $this->client = new \Drewm\MailChimp(\Config::get('services.mailchimp.apikey'));
+    $this->client = new MailChimp(\Config::get('services.mailchimp.apikey'));
   }
 
   public function unsubscribe($email, $list_id)
